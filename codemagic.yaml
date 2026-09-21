@@ -1,23 +1,23 @@
 workflows:
-  android-workflow:
-    name: SmartDMS PRO Android APK
-    instance_type: mac_mini_m2
+  smartdms-pro-android-apk:
+    name: WITHAQ PRO Phase 2
     max_build_duration: 60
+    instance_type: mac_mini_m2
     environment:
       flutter: stable
-      xcode: latest
-      cocoapods: default
     scripts:
-      - name: Set up local.properties
-        script: |
-          echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - name: Get Flutter packages
         script: |
-          cd $FCI_BUILD_DIR
-          flutter packages pub get
+          flutter pub get
+      - name: Generate App Icon
+        script: |
+          dart run flutter_launcher_icons
       - name: Build APK Release
         script: |
-          cd $FCI_BUILD_DIR
-          flutter build apk --release --no-tree-shake-icons
+          flutter build apk --release
     artifacts:
-      - build/**/outputs/**/*.apk
+      - build/app/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - mlm205383@gmail.com
